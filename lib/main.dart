@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:media_player/controllers/audio_controller.dart';
 import 'package:media_player/views/screens/home_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => AudioController(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 
