@@ -21,61 +21,90 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.deepPurple.shade800,
+            Colors.deepPurple.shade300,
+          ],
+        ),
+      ),
+      child: Scaffold(
         body: NestedScrollView(
-      headerSliverBuilder: (context, val) => [
-        SliverAppBar(
-          title: const Text(
-            "Media Player",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          headerSliverBuilder: (context, val) => [
+            SliverAppBar(
+              backgroundColor: Colors.transparent,
+              title: const Text(
+                "Media Player",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              pinned: true,
+              floating: true,
+              snap: true,
+              bottom: TabBar(
+                indicatorColor: Colors.white,
+                controller: tabController,
+                tabs: [
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.music_note_sharp,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        const Text(
+                          "Songs",
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.video_library_outlined,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        const Text(
+                          "Vidos",
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          pinned: true,
-          floating: true,
-          snap: true,
-          bottom: TabBar(
+          ],
+          body: TabBarView(
             controller: tabController,
-            tabs: [
-              Tab(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.music_note_sharp,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const Text("Songs"),
-                  ],
-                ),
-              ),
-              Tab(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.video_library_outlined,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const Text("Vidos"),
-                  ],
-                ),
-              ),
+            children: const [
+              SongPage(),
+              VideoPage(),
             ],
           ),
         ),
-      ],
-      body: TabBarView(
-        controller: tabController,
-        children: const [
-          SongPage(),
-          VideoPage(),
-        ],
+        backgroundColor: Colors.transparent,
       ),
-    ));
+    );
   }
 }

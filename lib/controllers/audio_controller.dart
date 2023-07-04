@@ -7,26 +7,63 @@ class AudioController extends ChangeNotifier {
   Duration duration = Duration.zero;
 
   AudioController() {
-    assetsAudioPlayer.open(
-      Audio(
-        audioPath + Song.audio,
+    assetsAudioPlayer
+        .open(
+      Playlist(
+        audios: [
+          Audio(
+            audioPath + Song.audio,
+          ),
+          Audio(
+            audioPath + Song.audio1,
+          ),
+        ],
+        startIndex: 0,
       ),
       autoStart: false,
-    );
+    )
+        .then((value) {
+      duration = assetsAudioPlayer.current.value!.audio.duration;
+    });
   }
 
-  play() {
-    assetsAudioPlayer.play();
+  play() async {
+    await assetsAudioPlayer.play();
     notifyListeners();
   }
 
-  pause() {
-    assetsAudioPlayer.pause();
+  next() async {
+    await assetsAudioPlayer.next(
+      stopIfLast: true,
+    );
+    notifyListeners();
+  }
+
+  previous() async {
+    await assetsAudioPlayer.previous(
+      keepLoopMode: true,
+    );
+    notifyListeners();
+  }
+
+  pause() async {
+    await assetsAudioPlayer.pause();
     notifyListeners();
   }
 
   get isPlaying {
-    assetsAudioPlayer.isPlaying;
+    return assetsAudioPlayer.isPlaying.value;
     notifyListeners();
+  }
+
+  seek({required int seconds}) async {
+    await assetsAudioPlayer.seek(
+      Duration(seconds: seconds),
+    );
+    notifyListeners();
+  }
+
+  get currentPosition {
+    return assetsAudioPlayer.currentPosition;
   }
 }
