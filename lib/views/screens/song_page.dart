@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:media_player/controllers/audio_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -10,10 +11,10 @@ class SongPage extends StatelessWidget {
     return Center(
       child: Consumer<AudioController>(builder: (context, provider, child) {
         return StreamBuilder(
-            stream: provider.currentPosition,
+            stream: provider.positionStream,
             builder: (context, AsyncSnapshot<Duration> snapShot) {
               if (snapShot.hasData) {
-                double currentPosition = snapShot.data!.inSeconds.toDouble();
+                double positionStream = snapShot.data!.inSeconds.toDouble();
 
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -33,7 +34,7 @@ class SongPage extends StatelessWidget {
                         activeColor: Colors.white,
                         min: 0,
                         max: provider.duration.inSeconds.toDouble(),
-                        value: currentPosition,
+                        value: positionStream,
                         onChanged: (val) async {
                           await provider.seek(
                             seconds: val.toInt(),

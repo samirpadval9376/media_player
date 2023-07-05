@@ -1,72 +1,66 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/foundation.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:media_player/utils/audio_utils.dart';
 
 class AudioController extends ChangeNotifier {
-  AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+  AudioPlayer player = AudioPlayer();
   Duration duration = Duration.zero;
+  Stream<Duration> position = const Stream.empty();
 
   AudioController() {
-    assetsAudioPlayer
-        .open(
-          Audio(
-            audioPath + Song.audio,
-          ),
-          autoStart: false,
+    final playlist = ConcatenatingAudioSource(
+      useLazyPreparation: true,
+      shuffleOrder: DefaultShuffleOrder(),
+      children: [
+        AudioSource.asset(
+          audioPath + Song.audio,
+        ),
+        AudioSource.asset(
+          audioPath + Song.audio1,
+        ),
+      ],
+    );
+    player
+        .setAudioSource(
+          playlist,
+          initialIndex: 0,
+          initialPosition: player.duration,
         )
-        .then(
-          (value) => duration = assetsAudioPlayer.current.value!.audio.duration,
-        );
-    next();
-    assetsAudioPlayer
-        .open(
-          Audio(
-            audioPath + Song.audio1,
-          ),
-          autoStart: false,
-        )
-        .then(
-          (value) => duration = assetsAudioPlayer.current.value!.audio.duration,
-        );
+        .then((value) => duration = player.duration!);
   }
 
   play() async {
-    await assetsAudioPlayer.play();
+    await player.play();
     notifyListeners();
   }
 
   next() async {
-    await assetsAudioPlayer.next(
-      stopIfLast: true,
-    );
+    await player.seekToNext();
     notifyListeners();
   }
 
   previous() async {
-    await assetsAudioPlayer.previous(
-      keepLoopMode: true,
-    );
+    await player.seekToPrevious();
     notifyListeners();
   }
 
   pause() async {
-    await assetsAudioPlayer.pause();
-    notifyListeners();
-  }
-
-  get isPlaying {
-    return assetsAudioPlayer.isPlaying.value;
+    await player.pause();
     notifyListeners();
   }
 
   seek({required int seconds}) async {
-    await assetsAudioPlayer.seek(
+    await player.seek(
       Duration(seconds: seconds),
     );
     notifyListeners();
   }
 
-  get currentPosition {
-    return assetsAudioPlayer.currentPosition;
+  get isPlaying {
+    return player.playingStream;
+  }
+
+  get positionStream {
+    return player.positionStream;
   }
 }
