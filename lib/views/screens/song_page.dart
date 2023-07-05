@@ -34,8 +34,8 @@ class SongPage extends StatelessWidget {
                         min: 0,
                         max: provider.duration.inSeconds.toDouble(),
                         value: currentPosition,
-                        onChanged: (val) {
-                          provider.seek(
+                        onChanged: (val) async {
+                          await provider.seek(
                             seconds: val.toInt(),
                           );
                         },

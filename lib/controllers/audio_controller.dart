@@ -9,22 +9,25 @@ class AudioController extends ChangeNotifier {
   AudioController() {
     assetsAudioPlayer
         .open(
-      Playlist(
-        audios: [
           Audio(
             audioPath + Song.audio,
           ),
+          autoStart: false,
+        )
+        .then(
+          (value) => duration = assetsAudioPlayer.current.value!.audio.duration,
+        );
+    next();
+    assetsAudioPlayer
+        .open(
           Audio(
             audioPath + Song.audio1,
           ),
-        ],
-        startIndex: 0,
-      ),
-      autoStart: false,
-    )
-        .then((value) {
-      duration = assetsAudioPlayer.current.value!.audio.duration;
-    });
+          autoStart: false,
+        )
+        .then(
+          (value) => duration = assetsAudioPlayer.current.value!.audio.duration,
+        );
   }
 
   play() async {
