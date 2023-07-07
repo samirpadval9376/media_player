@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:media_player/controllers/audio_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +11,7 @@ class SongPage extends StatelessWidget {
       child: Consumer<AudioController>(builder: (context, provider, child) {
         return StreamBuilder(
             stream: provider.positionStream,
+            initialData: provider.duration,
             builder: (context, AsyncSnapshot<Duration> snapShot) {
               if (snapShot.hasData) {
                 double positionStream = snapShot.data!.inSeconds.toDouble();

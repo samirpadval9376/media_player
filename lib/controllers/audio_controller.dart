@@ -1,66 +1,65 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/foundation.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:media_player/utils/audio_utils.dart';
 
 class AudioController extends ChangeNotifier {
-  AudioPlayer player = AudioPlayer();
+  AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
   Duration duration = Duration.zero;
   Stream<Duration> position = const Stream.empty();
 
   AudioController() {
-    final playlist = ConcatenatingAudioSource(
-      useLazyPreparation: true,
-      shuffleOrder: DefaultShuffleOrder(),
-      children: [
-        AudioSource.asset(
-          audioPath + Song.audio,
-        ),
-        AudioSource.asset(
-          audioPath + Song.audio1,
-        ),
-      ],
-    );
-    player
-        .setAudioSource(
-          playlist,
-          initialIndex: 0,
-          initialPosition: player.duration,
+    assetsAudioPlayer
+        .open(
+          Playlist(
+            audios: [
+              Audio(
+                audioPath + Song.audio,
+              ),
+              Audio(
+                audioPath + Song.audio1,
+              ),
+            ],
+          ),
+          autoStart: false,
+          showNotification: true,
         )
-        .then((value) => duration = player.duration!);
+        .then(
+          (value) => duration = assetsAudioPlayer.current.value!.audio.duration,
+        );
   }
 
   play() async {
-    await player.play();
+    await assetsAudioPlayer.play();
     notifyListeners();
   }
 
   next() async {
-    await player.seekToNext();
+    await assetsAudioPlayer.next();
     notifyListeners();
   }
 
   previous() async {
-    await player.seekToPrevious();
+    await assetsAudioPlayer.previous();
     notifyListeners();
   }
 
   pause() async {
-    await player.pause();
+    await assetsAudioPlayer.pause();
     notifyListeners();
   }
 
   seek({required int seconds}) async {
-    await player.seek(
+    await assetsAudioPlayer.seek(
       Duration(seconds: seconds),
     );
     notifyListeners();
   }
 
   get isPlaying {
-    return player.playingStream;
+    return assetsAudioPlayer.isPlaying;
   }
 
   get positionStream {
-    return player.positionStream;
+    return assetsAudioPlayer.currentPosition;
   }
 }
