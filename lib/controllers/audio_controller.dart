@@ -5,27 +5,44 @@ import 'package:media_player/utils/audio_utils.dart';
 class AudioController extends ChangeNotifier {
   AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
   Duration duration = Duration.zero;
-  Stream<Duration> position = const Stream.empty();
+  int index = 0;
+  List<Audio> songList = [
+    Audio(
+      audioPath + Song.audio,
+    ),
+    Audio(
+      audioPath + Song.audio1,
+    ),
+    Audio(
+      audioPath + Song.audio2,
+    ),
+    Audio(
+      audioPath + Song.audio3,
+    ),
+    Audio(
+      audioPath + Song.audio4,
+    ),
+    Audio(
+      audioPath + Song.audio5,
+    ),
+  ];
 
   AudioController() {
-    assetsAudioPlayer
+    init();
+  }
+
+  init() async {
+    await assetsAudioPlayer
         .open(
-          Playlist(
-            audios: [
-              Audio(
-                audioPath + Song.audio,
-              ),
-              Audio(
-                audioPath + Song.audio1,
-              ),
-            ],
-          ),
-          autoStart: false,
+          songList[index],
+          autoStart: (index == 0) ? false : true,
           showNotification: true,
         )
         .then(
           (value) => duration = assetsAudioPlayer.current.value!.audio.duration,
         );
+
+    debugPrint("$index song played.....................");
   }
 
   play() async {
@@ -34,12 +51,23 @@ class AudioController extends ChangeNotifier {
   }
 
   next() async {
-    await assetsAudioPlayer.next();
+    // await assetsAudioPlayer.next();
+    await assetsAudioPlayer.stop();
+    if (songList.length > index + 1) {
+      index++;
+      debugPrint("$index...............................");
+    } else {
+      index = 1;
+    }
+    init();
     notifyListeners();
   }
 
   previous() async {
-    await assetsAudioPlayer.previous();
+    // await assetsAudioPlayer.previous();
+    await assetsAudioPlayer.stop();
+    index--;
+    init();
     notifyListeners();
   }
 
