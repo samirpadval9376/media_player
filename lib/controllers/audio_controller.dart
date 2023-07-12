@@ -35,7 +35,7 @@ class AudioController extends ChangeNotifier {
     await assetsAudioPlayer
         .open(
           songList[index],
-          autoStart: (index == 0) ? false : true,
+          autoStart: false,
           showNotification: true,
         )
         .then(
@@ -57,17 +57,31 @@ class AudioController extends ChangeNotifier {
       index++;
       debugPrint("$index...............................");
     } else {
-      index = 1;
+      index = 0;
     }
     init();
+    play();
+    notifyListeners();
+  }
+
+  changeIndex({required int index}) async {
+    await assetsAudioPlayer.stop();
+    this.index = index;
+    init();
+    play();
     notifyListeners();
   }
 
   previous() async {
     // await assetsAudioPlayer.previous();
     await assetsAudioPlayer.stop();
-    index--;
+    if (index != 0) {
+      index--;
+    } else {
+      index = songList.length;
+    }
     init();
+    play();
     notifyListeners();
   }
 
@@ -84,7 +98,7 @@ class AudioController extends ChangeNotifier {
   }
 
   get isPlaying {
-    return assetsAudioPlayer.isPlaying;
+    return assetsAudioPlayer.isPlaying.value;
   }
 
   get positionStream {

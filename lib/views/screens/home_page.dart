@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:media_player/views/screens/song_details_page.dart';
 import 'package:media_player/views/screens/song_page.dart';
 import 'package:media_player/views/screens/video_page.dart';
 
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage>
         body: NestedScrollView(
           headerSliverBuilder: (context, val) => [
             SliverAppBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.deepPurple.shade700,
               title: const Text(
                 "Media Player",
                 style: TextStyle(
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage>
               ),
               pinned: true,
               floating: true,
-              snap: true,
+              snap: false,
               bottom: TabBar(
                 indicatorColor: Colors.white,
                 controller: tabController,
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage>
                           width: 8,
                         ),
                         Text(
-                          "Vidos",
+                          "Videos",
                           style: TextStyle(
                             color: Colors.white,
                           ),

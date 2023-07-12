@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:media_player/controllers/audio_controller.dart';
+import 'package:media_player/utils/my_page_route.dart';
 import 'package:media_player/views/screens/home_page.dart';
+import 'package:media_player/views/screens/song_details_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -29,7 +31,10 @@ class MyApp extends StatelessWidget {
           thumbShape: null,
         ),
       ),
-      home: HomePage(),
+      routes: {
+        MyPageRoute.home: (context) => HomePage(),
+        MyPageRoute.songDetailsPage: (context) => SongDetailsPage(),
+      },
     );
   }
 }
