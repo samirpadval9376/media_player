@@ -25,6 +25,28 @@ class SongDetailsPage extends StatelessWidget {
         ),
       ),
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.deepPurple.shade700,
+          title: const Text(
+            "Songs",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
+          centerTitle: true,
+          elevation: 0,
+        ),
         backgroundColor: Colors.transparent,
         body: Stack(
           alignment: Alignment.bottomCenter,
@@ -32,6 +54,10 @@ class SongDetailsPage extends StatelessWidget {
             Container(
               height: s.height,
               width: 365,
+              constraints: const BoxConstraints.expand(
+                height: double.infinity,
+                width: double.infinity,
+              ),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
@@ -40,8 +66,8 @@ class SongDetailsPage extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              height: s.height * 0.15,
+            SizedBox(
+              height: s.height * 0.25,
               width: double.infinity,
               child: Consumer<AudioController>(
                   builder: (context, provider, child) {
@@ -56,6 +82,52 @@ class SongDetailsPage extends StatelessWidget {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 20,
+                                    bottom: 10,
+                                    top: 10,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        SongModal.allSongs[index].titles,
+                                        style: const TextStyle(
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        SongModal.allSongs[index].artistName,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 10,
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.favorite_outline,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             SliderTheme(
                               data: SliderTheme.of(context).copyWith(
                                 thumbShape: const RoundSliderThumbShape(
@@ -79,6 +151,15 @@ class SongDetailsPage extends StatelessWidget {
                                 },
                               ),
                             ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Text(
+                            //         "${snapShot.data!.inMinutes}:${snapShot.data!.inSeconds % 60}"),
+                            //     Text(
+                            //         "${provider.duration.inMinutes}:${provider.duration.inSeconds % 60}"),
+                            //   ],
+                            // ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -112,6 +193,7 @@ class SongDetailsPage extends StatelessWidget {
                                 IconButton(
                                   onPressed: () {
                                     provider.next();
+                                    index++;
                                   },
                                   icon: const Icon(
                                     Icons.arrow_forward_ios,

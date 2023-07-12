@@ -41,8 +41,6 @@ class AudioController extends ChangeNotifier {
         .then(
           (value) => duration = assetsAudioPlayer.current.value!.audio.duration,
         );
-
-    debugPrint("$index song played.....................");
   }
 
   play() async {
@@ -55,9 +53,7 @@ class AudioController extends ChangeNotifier {
     await assetsAudioPlayer.stop();
     if (songList.length > index + 1) {
       index++;
-      debugPrint("$index...............................");
-    } else {
-      index = 0;
+      assetsAudioPlayer.stop();
     }
     init();
     play();
@@ -77,8 +73,6 @@ class AudioController extends ChangeNotifier {
     await assetsAudioPlayer.stop();
     if (index != 0) {
       index--;
-    } else {
-      index = songList.length;
     }
     init();
     play();
