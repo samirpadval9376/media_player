@@ -23,6 +23,7 @@ class VideoPage extends StatelessWidget {
             SizedBox(
               height: 350,
               child: ListView.builder(
+                itemCount: provider.videos.length,
                 itemBuilder: (context, index) => ListTile(
                   onTap: () {
                     provider.videoIndex(index: index);
